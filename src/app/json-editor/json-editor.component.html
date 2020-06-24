@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-6">
+        <h1>JSON Viewer</h1>
+    </div>
+    <div class="col-6 text-right">
+        <input title="Save & Share" type="button" value="Save & Share" class="btn btn-primary">
+    </div>
+</div>
+<div class="col-12">
+    <div class="row border">
+        <div class="col-5 border">
+            <div id="jsoneditor"></div>
+        </div>
+        <div class="col-2 border">
+            <div id="buttonDiv" class="buttonSection">
+                <label for="mode"><b>Result mode:</b></label> <br>
+                <select id="mode" class="button btn-block selectbox">
+                    <option value="tree">tree</option>
+                    <option value="view">view</option>
+                    <option value="form">form</option>
+                </select>
+                <input title="Load From Url" type="button" value="Load Url" class="btn btn-primary btn-block">
+                <input type="button" value="Browse" id="me" class="btn btn-primary btn-block" title="OpenFile">
+                <input type="button" title="JSON Viewer" id="defaultaction" value="Tree Viewer"
+                    class="btn btn-primary btn-block">
+                <select class="button btn-block selectbox" id="sel1">
+                    <option value="1">1 Tab Space</option>
+                    <option value="2" selected="selected">2 Tab Space</option>
+                    <option value="3">3 Tab Space</option>
+                    <option value="4">4 Tab Space</option>
+                </select>
+                <input type="button" title="Beautify" value="Beautify" class="btn btn-primary btn-block">
+                <input type="button" title="Minify" value="Minify" class="btn btn-primary btn-block">
+                <input type="button" title="Validate Json" value="Validate " class="btn btn-primary btn-block">
+                <input title="Convert into XML" type="button" value="JSON to XML" class="btn btn-primary btn-block">
+                <input type="button" value="JSON to CSV" title="Convert and Download CSV"
+                    class="btn btn-primary btn-block">
+                <input type="button" title="Download Result" value="Download" class="btn btn-primary btn-block">
+            </div>
+        </div>
+        <div class="col-5 border">
+
+        </div>
+    </div>
+</div>
