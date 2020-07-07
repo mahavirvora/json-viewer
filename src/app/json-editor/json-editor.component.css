@@ -33,3 +33,13 @@
 .btn-primary.focus {
   box-shadow: none !important;
 }
+.modal-header {
+  padding: 0.5rem 1rem;
+  outline: none;
+}
+.modal-title {
+  color: #ed4338;
+}
+button:focus {
+  outline: none;
+}

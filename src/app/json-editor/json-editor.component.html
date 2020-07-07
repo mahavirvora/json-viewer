@@ -18,7 +18,7 @@
                 <option value="view">view</option>
                 <option value="form">form</option>
             </select>
-            <input title="Load From Url" type="button" value="Load Url" class="btn btn-primary btn-block" (click)="open(LoadURL)">
+            <input title="Load From Url" type="button" value="Load Url" class="btn btn-primary btn-block" (click)="open(content)">
             <input type="button" value="Browse" id="me" class="btn btn-primary btn-block" title="OpenFile">
             <input type="button" title="JSON Viewer" id="defaultaction" value="Tree Viewer"
                 class="btn btn-primary btn-block">
@@ -42,20 +42,20 @@
 </div>
 
 
-<ng-template #LoadURL let-c="close" let-d="dismiss">
+<ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Load Url</h4>
+        <h4 class="modal-title" id="modal-basic-title">Load URL</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p>Enter a public Urls which no need authentication cannot be loaded.</p>
+        <p>Enter a public URL here.</p>
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="http://" aria-label="Enter Url"
-                aria-describedby="basic-addon2">
+                aria-describedby="load-url">
             <div class="input-group-append">
-                <span class="input-group-text" id="basic-addon2">Open</span>
+                <button class="btn btn-primary" id="load-url">Open</button>
             </div>
         </div>
     </div>

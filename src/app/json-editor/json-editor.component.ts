@@ -2,33 +2,33 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-json-editor',
   templateUrl: 'json-editor.component.html',
-  styleUrls: ['json-editor.component.css']
+  styleUrls: ['json-editor.component.css'],
+  providers: [NgbModalConfig, NgbModal, FormsModule]
 })
 export class JsonEditorComponent implements OnInit {
 
   public JSON_Source = "";
   public JSON_Target = "";
-  private modalService: NgbModal;
-  providers: [NgbModalConfig, NgbModal, FormsModule]
-  
-  constructor(config: NgbModalConfig) {
+
+  constructor(config: NgbModalConfig, private modalService: NgbModal) {
     // customize default values of modals used by this component tree
     config.backdrop = 'static';
     config.keyboard = false;
   }
 
-  Minify() {
-  this.JSON_Target = JSON.stringify(JSON.parse(this.JSON_Source));
+  open(content) {
+    this.modalService.open(content, { centered: true });
   }
-  
-  open(LoadURL) {
-    this.modalService.open(URL);
+
+  Minify() {
+    this.JSON_Target = JSON.stringify(JSON.parse(this.JSON_Source));
   }
 
   ngOnInit(): void {
   }
-  
+
 }
