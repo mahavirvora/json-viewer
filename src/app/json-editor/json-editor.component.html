@@ -22,9 +22,9 @@
             <input type="button" value="Browse" id="me" class="btn btn-primary btn-block" title="OpenFile">
             <input type="button" title="JSON Viewer" id="defaultaction" value="Tree Viewer"
                 class="btn btn-primary btn-block">
-            <select class="button btn-block selectbox" id="sel1">
+            <select class="button btn-block selectbox" id="sel1" ng-controller="langCtrl" ng-model="selected" ng-change="selectedSpace()">
                 <option value="1">1 Tab Space</option>
-                <option value="2" selected="selected">2 Tab Space</option>
+                <option value="2">2 Tab Space</option>
                 <option value="3">3 Tab Space</option>
                 <option value="4">4 Tab Space</option>
             </select>
@@ -52,10 +52,10 @@
     <div class="modal-body">
         <p>Enter a public URL here.</p>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="http://" aria-label="Enter Url"
+            <input type="text" class="form-control" placeholder="http://" aria-label="Enter Url" [(ngModel)]="JSON_Source"
                 aria-describedby="load-url">
             <div class="input-group-append">
-                <button class="btn btn-primary" id="load-url">Open</button>
+                <button class="btn btn-primary" id="load-url" (click)="loadData()">Open</button>
             </div>
         </div>
     </div>
