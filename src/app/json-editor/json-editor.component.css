@@ -1,5 +1,5 @@
 .lined {
-  background: url("src/assets/img/line-numbers.png") no-repeat;
+  background: url("src/assets/img/line-numbers.png") no-repeat left top;
   padding-left: 35px;
   padding-top: 10px;
   width: 100%;
