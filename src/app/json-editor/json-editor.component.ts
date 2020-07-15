@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+declare var require: any
+const FileSaver = require('file-saver');
 @Component({
   selector: 'app-json-editor',
   templateUrl: 'json-editor.component.html',
@@ -15,7 +16,7 @@ export class JsonEditorComponent implements OnInit {
   public JSON_Target = "";
 
   body: any;
-  arrBirds: string[];
+  fileinput: any;
 
   constructor(
     config: NgbModalConfig,
@@ -28,17 +29,30 @@ export class JsonEditorComponent implements OnInit {
   open(content) {
     this.modalService.open(content, { centered: true });
   }
-
-  Minify() {
-    this.JSON_Target = JSON.stringify(JSON.parse(this.JSON_Source));
+  minifyJSON() {
+    try {
+      this.JSON_Target = JSON.stringify(JSON.parse(this.JSON_Source));
+    } catch (e) {
+      this.handleError(e);
+    }
   }
-
+  beautifyJSON() {
+    try {
+      this.JSON_Target = JSON.stringify(JSON.parse(this.JSON_Source), null, "    ");
+    } catch (e) {
+      this.handleError(e);
+    }
+  }
+  handleError(error: any) {
+    console.log(error);
+  }
   loadData() {
     this.body.appendChild(document.createTextNode(JSON.stringify(this.JSON_Source, null, 4)));
   }
-
-  ngOnInit(): void {
-
+  onFileLoad($event = 'any'){
+    this.fileinput.nativeElement.value = JSON.parse(localStorage.getItem(this.JSON_Source));
   }
+
+  ngOnInit(): void { }
 
 }
