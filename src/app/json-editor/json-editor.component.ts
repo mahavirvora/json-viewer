@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-declare var require: any
-const FileSaver = require('file-saver');
 @Component({
   selector: 'app-json-editor',
   templateUrl: 'json-editor.component.html',
@@ -15,9 +13,6 @@ export class JsonEditorComponent implements OnInit {
   public JSON_Source = "";
   public JSON_Target = "";
 
-  body: any;
-  fileinput: any;
-
   constructor(
     config: NgbModalConfig,
     private modalService: NgbModal
@@ -26,9 +21,6 @@ export class JsonEditorComponent implements OnInit {
     config.keyboard = false;
   }
 
-  open(content) {
-    this.modalService.open(content, { centered: true });
-  }
   minifyJSON() {
     try {
       this.JSON_Target = JSON.stringify(JSON.parse(this.JSON_Source));
@@ -44,13 +36,8 @@ export class JsonEditorComponent implements OnInit {
     }
   }
   handleError(error: any) {
+    alert("JSON is not well formated.");
     console.log(error);
-  }
-  loadData() {
-    this.body.appendChild(document.createTextNode(JSON.stringify(this.JSON_Source, null, 4)));
-  }
-  onFileLoad($event = 'any'){
-    this.fileinput.nativeElement.value = JSON.parse(localStorage.getItem(this.JSON_Source));
   }
 
   ngOnInit(): void { }
