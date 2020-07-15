@@ -1,0 +1,28 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
+* {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  font-size: 30px;
+}
+
+header {
+  background-color: #fff;
+  margin-bottom: 20px;
+  box-shadow: 0px 1px 5px RGBA(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+}
+.json-viewer-logo {
+  padding: 10px;
+  margin-bottom: 0px;
+}
+.sooryen-logo {
+  padding: 10px 20px;
+  margin-bottom: 0px;
+}
+.buttonSection {
+  padding: 15px;
+}
