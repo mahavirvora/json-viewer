@@ -14,27 +14,10 @@ export class JsonEditorComponent implements OnInit {
   public JSON_Source = "";
   public JSON_Target = "";
 
-  body: any;
-  arrBirds: string[];
-
-  constructor(
-    config: NgbModalConfig,
-    private modalService: NgbModal
-  ) {
-    config.backdrop = 'static';
-    config.keyboard = false;
-  }
-
-  open(content) {
-    this.modalService.open(content, { centered: true });
-  }
+  constructor() { }
 
   Minify() {
     this.JSON_Target = JSON.stringify(JSON.parse(this.JSON_Source));
-  }
-
-  loadData() {
-    this.body.appendChild(document.createTextNode(JSON.stringify(this.JSON_Source, null, 4)));
   }
 
   ngOnInit(): void {

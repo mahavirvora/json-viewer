@@ -1,7 +1,5 @@
 .lined {
-  background: url(src/assets/img/line-numbers.png);
-  background-attachment: local;
-  background-repeat: no-repeat;
+  background: url("src/assets/img/line-numbers.png") no-repeat left top;
   padding-left: 35px;
   padding-top: 10px;
   width: 100%;
@@ -12,7 +10,7 @@
   outline: none;
   font-size: 11px;
   line-break: 15px;
-  font-family: monospace;
+  min-height: 70vh;
 }
 .selectbox {
   min-height: 35px;
