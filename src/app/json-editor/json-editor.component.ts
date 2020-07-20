@@ -16,7 +16,7 @@ export class JsonEditorComponent implements OnInit {
 
   constructor() { }
 
-  Minify() {
+  minifyJSON() {
     this.JSON_Target = JSON.stringify(JSON.parse(this.JSON_Source));
   }
 
