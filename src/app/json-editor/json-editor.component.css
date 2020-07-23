@@ -17,3 +17,16 @@
   border-radius: 3px;
   padding: 5px;
 }
+.btn-primary {
+  background-color: #fb5045;
+  border-color: #fb5045;
+}
+.btn-primary:hover,
+.btn-primary:active {
+  background-color: #ed4338 !important;
+  border-color: #ed4338 !important;
+}
+.btn-primary:focus,
+.btn-primary.focus {
+  box-shadow: none !important;
+}
