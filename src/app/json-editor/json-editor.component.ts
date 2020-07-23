@@ -14,6 +14,8 @@ export class JsonEditorComponent implements OnInit {
   public JSON_Source = "";
   public JSON_Target = "";
   body: any;
+  isValid: boolean;
+  formatting: { color: string; 'background-color': string; };
 
   constructor(
     config: NgbModalConfig,
@@ -68,6 +70,23 @@ export class JsonEditorComponent implements OnInit {
     })(f);
     reader.readAsText(f);
   }
+
+  validate() {
+    return (e) => {
+      try {
+        this.message = JSON.parse(this.JSON_Source);
+      } catch (e) {
+        this.isValid = false;
+        this.formatting = { color: 'red', 'background-color': '#f2dede' };
+      }
+      this.message = JSON.parse(this.JSON_Source);
+      this.isValid = true;
+      this.formatting = { color: 'green', 'background-color': '#d0e9c6' };
+    };
+  } message(message: any): any {
+    throw new Error("Method not implemented.");
+  }
+
 
 
   ngOnInit(): void {
