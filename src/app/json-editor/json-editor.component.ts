@@ -72,6 +72,9 @@ export class JsonEditorComponent implements OnInit {
   }
 
   validate() {
+    this.formatting = { color: 'green', 'background-color': '#d0e9c6' };
+    this.isValid = true;
+    this.JSON_Source = JSON.stringify(this.message);
     return (e) => {
       try {
         this.message = JSON.parse(this.JSON_Source);
