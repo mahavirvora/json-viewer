@@ -125,7 +125,6 @@
       }
     }
   },
-  "defaultProject": "json-viewer",
   "cli": {
     "analytics": false
   }
