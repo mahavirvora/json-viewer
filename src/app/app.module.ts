@@ -2,9 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
-
 import { AppComponent } from 'src/app/app.component';
 import { JsonEditorComponent } from 'src/app/json-editor/json-editor.component';
 
@@ -14,7 +11,7 @@ import { JsonEditorComponent } from 'src/app/json-editor/json-editor.component';
     JsonEditorComponent
   ],
   imports: [
-    BrowserModule, FormsModule, NgbModule, HttpClientModule
+    BrowserModule, FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
