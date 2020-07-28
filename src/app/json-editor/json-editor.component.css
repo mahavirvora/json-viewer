@@ -11,6 +11,7 @@
   font-size: 11px;
   line-break: 15px;
   font-family: monospace;
+  min-height: 70vh;
 }
 .selectbox {
   min-height: 35px;
