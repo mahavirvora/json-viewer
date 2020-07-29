@@ -21,7 +21,8 @@
                 <option value="4">4 Tab Space</option>
             </select>
 
-            <input title="Load From Url" type="button" value="Load Url" class="btn btn-primary btn-block" />
+            <input title="Load From Url" type="button" value="Load Url" class="btn btn-primary btn-block"
+                (click)="open(content)">
             <input class="d-none" type="file" (change)="onFileLoad($event)" #fileinput />
             <button class="btn btn-primary btn-block mt-2" type="button" (click)="fileinput.click()">Browse</button>
             <input type="button" title="JSON Viewer" id="defaultaction" value="JSON Viewer"
@@ -49,9 +50,9 @@
     <div class="modal-body">
         <p>Enter a public URL here.</p>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="http://" />
+            <input type="text" class="form-control" [(ngModel)]="jsonURL" placeholder="http://" />
             <div class="input-group-append">
-                <button class="btn btn-primary">Load JSON</button>
+                <button class="btn btn-primary" (click)="loadJSON()">Load JSON</button>
             </div>
         </div>
     </div>
