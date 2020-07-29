@@ -1,5 +1,6 @@
 .lined {
   background: url("src/assets/img/line-numbers.png") no-repeat left top;
+  background-attachment: local;
   padding-left: 35px;
   padding-top: 10px;
   width: 100%;
@@ -40,4 +41,7 @@
 }
 button:focus {
   outline: none;
+}
+.buttonSection{
+  text-align: center;
 }
