@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
   selector: 'app-json-editor',
   templateUrl: 'json-editor.component.html',
@@ -24,10 +23,6 @@ export class JsonEditorComponent implements OnInit {
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
-  }
-
-  open(content) {
-    this.modalService.open(content, { centered: true });
   }
 
   minifyJSON() {
@@ -89,8 +84,6 @@ export class JsonEditorComponent implements OnInit {
     } 
   }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void { }
 
 }
