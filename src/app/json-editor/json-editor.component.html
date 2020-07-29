@@ -13,8 +13,8 @@
     <div class="col-2 border p-3">
         <div id="buttonDiv" class="buttonSection">
             <label for="mode"><b>Result Mode</b></label> <br>
-            <select class="button btn-block selectbox" id="sel1" ng-controller="langCtrl" ng-model="selected"
-                ng-change="selectedSpace()">
+            <select class="button btn-block selectbox" (change)="selectedSpace($event)">
+                <option>Choose Space</option>
                 <option value="1">1 Tab Space</option>
                 <option value="2">2 Tab Space</option>
                 <option value="3">3 Tab Space</option>

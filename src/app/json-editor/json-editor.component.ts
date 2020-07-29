@@ -25,6 +25,10 @@ export class JsonEditorComponent implements OnInit {
     config.keyboard = false;
   }
 
+  selectedSpace(event: any) {
+    this.JSON_Target = JSON.stringify(JSON.parse(this.JSON_Source), undefined ,Number(event.target.value));
+  }
+
   minifyJSON() {
     try {
       this.JSON_Target = JSON.stringify(JSON.parse(this.JSON_Source));
