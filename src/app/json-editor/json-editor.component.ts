@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { FormsModule, FormGroup } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-json-editor',
@@ -15,14 +14,13 @@ export class JsonEditorComponent implements OnInit {
   public JSON_Source = "";
   public JSON_Target = "";
   body: any;
-  appSettingsService: any;
-  loadJSONform: FormGroup;
-  jsonURL: any;
+  isValid: boolean;
+  formatting: { color: string; 'background-color': string; };
+  message: any;
 
   constructor(
     config: NgbModalConfig,
-    private modalService: NgbModal,
-    private http: HttpClient
+    private modalService: NgbModal
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -55,18 +53,44 @@ export class JsonEditorComponent implements OnInit {
     this.body.appendChild(document.createTextNode(JSON.stringify(this.JSON_Source, null, 4)));
   }
 
-  loadJSON() {
-    try {
-      return this.http.get(this.jsonURL)
-        .subscribe((data: any) => {
-          this.JSON_Source = JSON.stringify(data);
-        });
-    } catch (e) {
-      alert("Please Enter URL.");
-    }
+  onFileLoad(event) {
+    const f = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = ((theFile) => {
+      return (e) => {
+        try {
+          const json = JSON.parse(e.target.result);
+          const resSTR = JSON.stringify(json);
+          this.JSON_Source = JSON.parse(resSTR);
+          this.JSON_Source = JSON.stringify(JSON.parse(resSTR), null, "    ");
+        } catch (ex) {
+          alert('exception when trying to parse json = ' + ex);
+        }
+      };
+    })(f);
+    reader.readAsText(f);
   }
 
-  ngOnInit() {
+  validate() {
+    this.formatting = { color: 'green', 'background-color': '#d0e9c6' };
+    this.isValid = true;
+    this.JSON_Source = JSON.stringify(this.message);
+    return (e) => {
+      try {
+        this.message = JSON.parse(this.JSON_Source);
+      } catch (e) {
+        this.isValid = false;
+        this.formatting = { color: 'red', 'background-color': '#f2dede' };
+      }
+      this.message = JSON.parse(this.JSON_Source);
+      this.isValid = true;
+      this.formatting = { color: 'green', 'background-color': '#d0e9c6' };
+    } 
+  }
+
+  ngOnInit(): void {
 
   }
+
 }

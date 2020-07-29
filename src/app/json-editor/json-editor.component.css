@@ -1,5 +1,6 @@
 .lined {
   background: url("src/assets/img/line-numbers.png") no-repeat left top;
+  background-attachment: local;
   padding-left: 35px;
   padding-top: 10px;
   width: 100%;
@@ -10,7 +11,6 @@
   outline: none;
   font-size: 11px;
   line-break: 15px;
-  font-family: monospace;
   min-height: 70vh;
 }
 .selectbox {
@@ -41,4 +41,7 @@
 }
 button:focus {
   outline: none;
+}
+.buttonSection{
+  text-align: center;
 }
