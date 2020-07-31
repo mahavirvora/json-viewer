@@ -99,16 +99,16 @@ export class JsonEditorComponent implements OnInit {
   validate() {
     this.formatting = { color: 'green', 'background-color': '#d0e9c6' };
     this.isValid = true;
-    this.jsonSource = JSON.stringify(this.message);
+    this.message = this.jsonSource;
+    // this.jsonSource = JSON.stringify(this.message);
+    this.message = JSON.parse(this.jsonSource);
     try {
+      // this.jsonSource = JSON.stringify(JSON.parse(this.message));
       this.message = JSON.parse(this.jsonSource);
     } catch (e) {
       this.isValid = false;
       this.formatting = { color: 'red', 'background-color': '#f2dede' };
     }
-    this.message = JSON.parse(this.jsonSource);
-    this.isValid = true;
-    this.formatting = { color: 'green', 'background-color': '#d0e9c6' };
   }
 
   jsonViewer() {
