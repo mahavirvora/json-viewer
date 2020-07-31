@@ -115,4 +115,9 @@ export class JsonEditorComponent implements OnInit {
     this.jsonTarget = this.jsonSource;
   }
 
+  clear() {
+    this.jsonSource = '';
+    this.jsonTarget = '';
+  }
+
 }
