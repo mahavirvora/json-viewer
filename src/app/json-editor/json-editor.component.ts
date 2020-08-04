@@ -120,4 +120,16 @@ export class JsonEditorComponent implements OnInit {
     this.jsonTarget = '';
   }
 
+  downloadFile() {
+    if (this.jsonTarget.length < 1) {
+      window.alert("This field cant be left empty");
+      return true;
+    }
+    else {
+      var json = document.createElement('a');
+      json.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(this.jsonTarget));
+      json.setAttribute('download', 'download.json');
+      json.click();
+    }
+  }
 }
