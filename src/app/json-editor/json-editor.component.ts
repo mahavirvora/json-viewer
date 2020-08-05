@@ -127,7 +127,5 @@ export class JsonEditorComponent implements OnInit {
       json.click();
     }
   }
-
-
-
+  
 } 

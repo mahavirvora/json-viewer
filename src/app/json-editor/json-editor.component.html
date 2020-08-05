@@ -16,10 +16,11 @@
         (click)="validate()" disabled>
 
       <select class="button btn-block selectbox" (change)="selectedSpace($event)">
+        <option selected>Choose Space</option>
         <option value="1">1 Tab Space</option>
         <option value="2">2 Tab Space</option>
         <option value="3">3 Tab Space</option>
-        <option value="4" selected>4 Tab Space</option>
+        <option value="4">4 Tab Space</option>
       </select>
 
       <br> <label for="mode"><b>Input Mode</b></label> <br>
@@ -48,9 +49,9 @@
     </button>
   </div>
   <div class="modal-body">
-    <p>Enter a public URL here.</p>
+    <p>Enter a Public JSON URL here only.</p>
     <div class="input-group mb-3">
-      <input type="text" class="form-control" [(ngModel)]="jsonURL" placeholder="http://" />
+      <input type="text" class="form-control" [(ngModel)]="jsonURL" placeholder="http://example.json" />
       <div class="input-group-append">
         <button class="btn btn-primary" (click)="loadJSON()">Load JSON</button>
       </div>
