@@ -44,6 +44,7 @@ export class JsonEditorComponent implements OnInit {
       if (this.jsonSource) {
         this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource));
       }
+      alert('JSON is not well formated.');
     } catch (e) {
       this.handleError(e);
     }
@@ -57,7 +58,7 @@ export class JsonEditorComponent implements OnInit {
     }
   }
 
-  handleError(error: any) {
+  handleError(error) {
     alert('JSON is not well formated.');
     console.log(error);
   }
