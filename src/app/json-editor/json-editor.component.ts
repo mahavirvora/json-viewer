@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { error } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-json-editor',
@@ -44,6 +45,9 @@ export class JsonEditorComponent implements OnInit {
       if (this.jsonSource) {
         this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource));
       }
+      else{
+        this.handleError(error);
+      }
     } catch (e) {
       this.handleError(e);
     }
@@ -57,7 +61,7 @@ export class JsonEditorComponent implements OnInit {
     }
   }
 
-  handleError(error: any) {
+  handleError(error) {
     alert('JSON is not well formated.');
     console.log(error);
   }
@@ -127,5 +131,5 @@ export class JsonEditorComponent implements OnInit {
       json.click();
     }
   }
-  
+
 } 
