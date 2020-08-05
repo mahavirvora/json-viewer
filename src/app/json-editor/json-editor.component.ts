@@ -58,8 +58,7 @@ export class JsonEditorComponent implements OnInit {
   }
 
   handleError(error: any) {
-    alert('JSON is not well formated.');
-    console.log(error);
+    this.body.appendChild(this.open(dialog));
   }
 
   loadData() {
