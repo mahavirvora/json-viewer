@@ -119,6 +119,11 @@ export class JsonEditorComponent implements OnInit {
     this.jsonTarget = this.jsonSource;
   }
 
+  clear() {
+    this.jsonSource = '';
+    this.jsonTarget = '';
+  }
+
   downloadFile() {
     if (this.jsonTarget.length < 1) {
       window.alert("This field cant be left empty");
@@ -131,5 +136,4 @@ export class JsonEditorComponent implements OnInit {
       json.click();
     }
   }
-
-} 
+}
