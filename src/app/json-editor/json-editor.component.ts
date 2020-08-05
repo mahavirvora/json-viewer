@@ -15,6 +15,7 @@ export class JsonEditorComponent implements OnInit {
   formatting: { color: string; 'background-color': string; };
   message: any;
   jsonURL: any;
+  dialog: any;
 
   constructor(
     public config: NgbModalConfig,
@@ -58,7 +59,10 @@ export class JsonEditorComponent implements OnInit {
   }
 
   handleError(error: any) {
-    this.body.appendChild(this.open(dialog));
+    this.dialog.open(this.secondDialog);
+  }
+  secondDialog(secondDialog: any) {
+    throw new Error("Method not implemented.");
   }
 
   loadData() {
