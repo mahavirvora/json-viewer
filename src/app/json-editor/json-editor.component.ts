@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
   selector: 'app-json-editor',
   templateUrl: 'json-editor.component.html',
@@ -15,8 +14,12 @@ export class JsonEditorComponent implements OnInit {
   formatting: { color: string; 'background-color': string; };
   message: any;
   jsonURL: any;
-  dialog: any;
-
+  @ViewChild('errormessage') errormessage:ElementRef;
+  content: string;
+  title: string = 'Error';
+  errorcontent: string = 'JSON is not well formated.';
+  downloadError: string = 'This field cant be left empty.';
+  
   constructor(
     public config: NgbModalConfig,
     private modalService: NgbModal,
@@ -26,8 +29,15 @@ export class JsonEditorComponent implements OnInit {
     config.keyboard = false;
   }
 
-
   ngOnInit(): void { }
+
+  handleError() {
+    this.modalService.open(this.errormessage, { centered: true });
+  }
+  
+  saveError(){
+    this.modalService.open(this.errormessage, { centered: true });
+  }
 
   open(content) {
     this.modalService.open(content, { centered: true });
@@ -45,9 +55,11 @@ export class JsonEditorComponent implements OnInit {
       if (this.jsonSource) {
         this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource));
       }
-      alert('JSON is not well formated.');
+      else {
+        this.handleError();
+      }
     } catch (e) {
-      this.handleError(e);
+      this.handleError();
     }
   }
 
@@ -55,12 +67,8 @@ export class JsonEditorComponent implements OnInit {
     try {
       this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource), null, '    ');
     } catch (e) {
-      this.handleError(e);
+      this.handleError();
     }
-  }
-
-  handleError(error) {
-    this.modalService.open(this.dialog, { centered: true });
   }
 
   loadData() {
@@ -89,8 +97,8 @@ export class JsonEditorComponent implements OnInit {
           const resSTR = JSON.stringify(json);
           this.jsonSource = JSON.parse(resSTR);
           this.jsonSource = JSON.stringify(JSON.parse(resSTR), null, '    ');
-        } catch (ex) {
-          alert('exception when trying to parse json = ' + ex);
+        } catch (e) {
+          alert('Exception when trying to parse json');
         }
       };
     })(f);
@@ -123,7 +131,8 @@ export class JsonEditorComponent implements OnInit {
 
   downloadFile() {
     if (this.jsonTarget.length < 1) {
-      window.alert("This field cant be left empty");
+      // window.alert("This field cant be left empty");
+      this.saveError();
       return true;
     }
     else {
