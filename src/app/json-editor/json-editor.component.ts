@@ -58,11 +58,8 @@ export class JsonEditorComponent implements OnInit {
     }
   }
 
-  handleError(error: any) {
-    this.dialog.open(this.secondDialog);
-  }
-  secondDialog(secondDialog: any) {
-    throw new Error("Method not implemented.");
+  handleError(error) {
+    this.modalService.open(this.dialog, { centered: true });
   }
 
   loadData() {
