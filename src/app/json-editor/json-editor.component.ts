@@ -18,13 +18,10 @@ export class JsonEditorComponent implements OnInit {
   @ViewChild('errormessage') errormessage: ElementRef;
   content: string;
   title: string;
-
   errorcontent: string;
-  fileLoadError: string;
-  downloadError: string;
-  loadJsonError: string;
+
   alertMessages = {
-    errorcontent: 'JSON object is not found in left editor.',
+    errorcontent: 'JSON object not found in left editor.',
     fileLoadError: 'Exception when trying to parse json',
     downloadError: "This field can't be left empty.",
     loadJsonError: "Please Enter URL.",
