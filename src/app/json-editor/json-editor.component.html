@@ -51,12 +51,24 @@
         </button>
     </div>
     <div class="modal-body">
-        <p>Enter a Public JSON URL Only.</p>
+        <p>Enter a Public JSON URL Only</p>
         <div class="input-group mb-3">
             <input type="text" class="form-control" [(ngModel)]="jsonURL" placeholder="http://example.json" />
             <div class="input-group-append">
                 <button class="btn btn-primary" (click)="loadJSON()">Load JSON</button>
             </div>
         </div>
+    </div>
+</ng-template>
+
+<ng-template #errormessage let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        {{errorcontent}}
     </div>
 </ng-template>
