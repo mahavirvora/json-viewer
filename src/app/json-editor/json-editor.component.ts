@@ -6,6 +6,7 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: 'json-editor.component.html',
   styleUrls: ['json-editor.component.css'],
 })
+
 export class JsonEditorComponent implements OnInit {
   jsonSource = '';
   jsonTarget = '';
@@ -14,12 +15,22 @@ export class JsonEditorComponent implements OnInit {
   formatting: { color: string; 'background-color': string; };
   message: any;
   jsonURL: any;
-  @ViewChild('errormessage') errormessage:ElementRef;
+  @ViewChild('errormessage') errormessage: ElementRef;
   content: string;
-  title: string = 'Error';
-  errorcontent: string = 'JSON is not well formated.';
-  downloadError: string = 'This field cant be left empty.';
-  
+  title: string;
+
+  errorcontent: string;
+  fileLoadError: string;
+  downloadError: string;
+  loadJsonError: string;
+  alertMessages = {
+    errorcontent: 'JSON object is not found in left editor.',
+    fileLoadError: 'Exception when trying to parse json',
+    downloadError: "This field can't be left empty.",
+    loadJsonError: "Please Enter URL.",
+  }
+
+
   constructor(
     public config: NgbModalConfig,
     private modalService: NgbModal,
@@ -27,15 +38,13 @@ export class JsonEditorComponent implements OnInit {
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
+    this.title = 'Error';
   }
 
   ngOnInit(): void { }
 
-  handleError() {
-    this.modalService.open(this.errormessage, { centered: true });
-  }
-  
-  saveError(){
+  handleError(message) {
+    this.errorcontent = message;
     this.modalService.open(this.errormessage, { centered: true });
   }
 
@@ -56,10 +65,10 @@ export class JsonEditorComponent implements OnInit {
         this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource));
       }
       else {
-        this.handleError();
+        this.handleError(this.alertMessages.errorcontent);
       }
     } catch (e) {
-      this.handleError();
+      this.handleError(this.alertMessages.errorcontent);
     }
   }
 
@@ -67,7 +76,7 @@ export class JsonEditorComponent implements OnInit {
     try {
       this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource), null, '    ');
     } catch (e) {
-      this.handleError();
+      this.handleError(this.alertMessages.errorcontent);
     }
   }
 
@@ -82,7 +91,7 @@ export class JsonEditorComponent implements OnInit {
           this.jsonSource = JSON.stringify(data);
         });
     } catch (e) {
-      alert('Please Enter URL.');
+      this.handleError(this.alertMessages.loadJsonError);
     }
   }
 
@@ -98,7 +107,7 @@ export class JsonEditorComponent implements OnInit {
           this.jsonSource = JSON.parse(resSTR);
           this.jsonSource = JSON.stringify(JSON.parse(resSTR), null, '    ');
         } catch (e) {
-          alert('Exception when trying to parse json');
+          this.handleError(this.alertMessages.fileLoadError);
         }
       };
     })(f);
@@ -131,8 +140,7 @@ export class JsonEditorComponent implements OnInit {
 
   downloadFile() {
     if (this.jsonTarget.length < 1) {
-      // window.alert("This field cant be left empty");
-      this.saveError();
+      this.handleError(this.alertMessages.downloadError);
       return true;
     }
     else {
