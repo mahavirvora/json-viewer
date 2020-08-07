@@ -1,24 +1,74 @@
-<div class="row">
-    <div class="col-6">
-        <h2>JSON Viewer</h2>
-    </div>
-    <div class="col-6 text-right">
-        <input title="Save & Share" type="button" value="Save & Share" class="btn btn-primary">
-    </div>
-</div>
 <div class="row no-gutters border">
     <div class="col-5 border">
-        <textarea class="lined h-100 w-100" [(ngModel)]="JSON_Source"></textarea>
+        <textarea class="lined h-100 w-100" [(ngModel)]="jsonSource"></textarea>
     </div>
     <div class="col-2 border p-3">
         <div id="buttonDiv" class="buttonSection">
             <label for="mode"><b>Result Mode</b></label> <br>
-            <input type="button" title="Beautify" value="Beautify" class="btn btn-primary btn-block" (click)="beautifyJSON()" />
-            <input type="button" title="Minify" value="Minify" class="btn btn-primary btn-block" (click)="minifyJSON()" />
-            <input type="button" title="JSON Viewer" value="JSON Viewer" class="btn btn-primary btn-block" (click)="formatter()" />
+
+            <input type="button" title="Beautify" value="Beautify" class="btn btn-primary btn-block"
+                (click)="beautifyJSON()">
+
+            <input type="button" title="Minify" value="Minify" class="btn btn-primary btn-block" (click)="minifyJSON()">
+
+            <input type="button" title="JSON Viewer" value="JSON Viewer" class="btn btn-primary btn-block"
+                (click)="jsonViewer()" disabled>
+
+            <input type="button" title="Validate Json" value="Validate " class="btn btn-primary btn-block"
+                (click)="validate()" disabled>
+
+            <select class="button btn-block selectbox" (change)="selectedSpace($event)">
+                <option value="1">1 Tab Space</option>
+                <option value="2">2 Tab Space</option>
+                <option value="3">3 Tab Space</option>
+                <option value="4" selected>4 Tab Space</option>
+            </select>
+
+            <br> <label for="mode"><b>Input Mode</b></label> <br>
+
+            <input class="d-none" type="file" (change)="onFileLoad($event)" #fileinput />
+            <button class="btn btn-primary btn-block mt-2" type="button" (click)="fileinput.click()">Browse</button>
+
+            <input title="Load From Url" type="button" value="Load Url" class="btn btn-primary btn-block"
+                (click)="open(content)">
+
+            <br> <label for="mode"><b>Action Mode</b></label> <br>
+            <input title="Download" type="button" value="Download" class="btn btn-primary btn-block"
+                (click)="downloadFile()">
+            <input title="clear" type="button" value="Clear" class="btn btn-primary btn-block" (click)="clear()">
         </div>
     </div>
     <div class="col-5 border">
-        <textarea class="lined h-100 w-100" [(ngModel)]="JSON_Target"></textarea>
+        <textarea class="lined h-100 w-100" [(ngModel)]="jsonTarget"></textarea>
     </div>
 </div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Load URL</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Enter a Public JSON URL Only</p>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" [(ngModel)]="jsonURL" placeholder="http://example.json" />
+            <div class="input-group-append">
+                <button class="btn btn-primary" (click)="loadJSON()">Load JSON</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #errormessage let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        {{errorcontent}}
+    </div>
+</ng-template>
