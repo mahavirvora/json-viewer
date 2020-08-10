@@ -1,7 +1,5 @@
 <div class="row no-gutters border">
-    <div class="col-5 border relative">
-        <b class="text-white bg-success alert-position" ng-if="isValid">Valid Json</b>
-        <b class="text-white bg-danger alert-position" ng-if="!isValid">Invalid Json</b>
+    <div class="col-5 border">
         <textarea class="lined h-100 w-100" [(ngModel)]="jsonSource"></textarea>
     </div>
     <div class="col-2 border p-3">
@@ -33,6 +31,11 @@
 
             <input title="Load From Url" type="button" value="Load Url" class="btn btn-primary btn-block"
                 (click)="open(content)">
+
+            <br> <label for="mode"><b>Action Mode</b></label> <br>
+            <input title="Download" type="button" value="Download" class="btn btn-primary btn-block"
+                (click)="downloadFile()">
+            <input title="clear" type="button" value="Clear" class="btn btn-primary btn-block" (click)="clear()">
         </div>
     </div>
     <div class="col-5 border">
@@ -48,12 +51,24 @@
         </button>
     </div>
     <div class="modal-body">
-        <p>Enter a public URL here.</p>
+        <p>Enter a Public JSON URL Only</p>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" [(ngModel)]="jsonURL" placeholder="http://" />
+            <input type="text" class="form-control" [(ngModel)]="jsonURL" placeholder="http://example.json" />
             <div class="input-group-append">
                 <button class="btn btn-primary" (click)="loadJSON()">Load JSON</button>
             </div>
         </div>
+    </div>
+</ng-template>
+
+<ng-template #errormessage let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        {{errorcontent}}
     </div>
 </ng-template>

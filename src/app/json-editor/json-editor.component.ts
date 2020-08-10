@@ -1,20 +1,33 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
   selector: 'app-json-editor',
   templateUrl: 'json-editor.component.html',
   styleUrls: ['json-editor.component.css'],
 })
+
 export class JsonEditorComponent implements OnInit {
   jsonSource = '';
   jsonTarget = '';
   body: any;
-  isValid: boolean;
-  formatting: { color: string; 'background-color': string; };
   message: any;
   jsonURL: any;
+  @ViewChild('errormessage') errormessage: ElementRef;
+  content: string;
+  title: string;
+  errorcontent: string;
+
+  alertMessages = {
+    errorcontent: 'JSON object not found in left editor.',
+    fileLoadError: 'Exception when trying to parse json',
+    downloadError: "This field can't be left empty.",
+    loadJsonError: "Please Enter URL.",
+    validJson: "Valid JSON data.",
+    invalidJson: "Invalid JSON data.",
+    emptyData: "Json Editor is Empty!."
+  }
+
 
   constructor(
     public config: NgbModalConfig,
@@ -23,10 +36,15 @@ export class JsonEditorComponent implements OnInit {
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
+    this.title = 'Error';
   }
 
-
   ngOnInit(): void { }
+
+  handleError(message) {
+    this.errorcontent = message;
+    this.modalService.open(this.errormessage, { centered: true });
+  }
 
   open(content) {
     this.modalService.open(content, { centered: true });
@@ -44,8 +62,11 @@ export class JsonEditorComponent implements OnInit {
       if (this.jsonSource) {
         this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource));
       }
+      else {
+        this.handleError(this.alertMessages.errorcontent);
+      }
     } catch (e) {
-      this.handleError(e);
+      this.handleError(this.alertMessages.errorcontent);
     }
   }
 
@@ -53,13 +74,8 @@ export class JsonEditorComponent implements OnInit {
     try {
       this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource), null, '    ');
     } catch (e) {
-      this.handleError(e);
+      this.handleError(this.alertMessages.errorcontent);
     }
-  }
-
-  handleError(error: any) {
-    alert('JSON is not well formated.');
-    console.log(error);
   }
 
   loadData() {
@@ -73,7 +89,7 @@ export class JsonEditorComponent implements OnInit {
           this.jsonSource = JSON.stringify(data);
         });
     } catch (e) {
-      alert('Please Enter URL.');
+      this.handleError(this.alertMessages.loadJsonError);
     }
   }
 
@@ -88,8 +104,8 @@ export class JsonEditorComponent implements OnInit {
           const resSTR = JSON.stringify(json);
           this.jsonSource = JSON.parse(resSTR);
           this.jsonSource = JSON.stringify(JSON.parse(resSTR), null, '    ');
-        } catch (ex) {
-          alert('exception when trying to parse json = ' + ex);
+        } catch (e) {
+          this.handleError(this.alertMessages.fileLoadError);
         }
       };
     })(f);
@@ -97,22 +113,41 @@ export class JsonEditorComponent implements OnInit {
   }
 
   validate() {
-    this.formatting = { color: 'green', 'background-color': '#d0e9c6' };
-    this.isValid = true;
-    this.message = this.jsonSource;
-    // this.jsonSource = JSON.stringify(this.message);
-    this.message = JSON.parse(this.jsonSource);
     try {
-      // this.jsonSource = JSON.stringify(JSON.parse(this.message));
-      this.message = JSON.parse(this.jsonSource);
+      if (this.jsonSource.length < 1) {
+        this.handleError(this.alertMessages.emptyData);
+        return true;
+      }
+      else{
+        this.message = this.jsonSource;
+        this.message = JSON.parse(this.jsonSource);
+        this.handleError(this.alertMessages.validJson);
+      }
     } catch (e) {
-      this.isValid = false;
-      this.formatting = { color: 'red', 'background-color': '#f2dede' };
+      this.handleError(this.alertMessages.invalidJson);
     }
   }
+
 
   jsonViewer() {
     this.jsonTarget = this.jsonSource;
   }
 
+  clear() {
+    this.jsonSource = '';
+    this.jsonTarget = '';
+  }
+
+  downloadFile() {
+    if (this.jsonTarget.length < 1) {
+      this.handleError(this.alertMessages.downloadError);
+      return true;
+    }
+    else {
+      var json = document.createElement('a');
+      json.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(this.jsonTarget));
+      json.setAttribute('download', 'download.json');
+      json.click();
+    }
+  }
 }
