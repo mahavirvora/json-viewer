@@ -38,7 +38,12 @@ export class JsonEditorComponent implements OnInit {
     this.title = 'Error';
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    var input = document.getElementsByClassName("lined");
+      
+      this.LNPrefix(input);
+      input.addEventListener("input", this.LNPrefix.bind(this, input));
+  }
 
   handleError(message) {
     this.errorcontent = message;
@@ -147,4 +152,40 @@ export class JsonEditorComponent implements OnInit {
       json.click();
     }
   }
+
+  LNPrefix(ta) {
+    var p = ta.parentElement,
+      lineCount = ta.value.split(/\r?\n/).length + 0;
+    ta.style.cssText = "width:90%;resize:none;line-height: normal !important;";
+    p.classList.add("LN_area");
+    p.style.cssText = "overflow:hidden;height:250px;";
+
+    function appendLineNum(sb, line) {
+      var n = document.createElement("div");
+      n.innerText = line;
+      n.classList.add("LN_n");
+      n.style.cssText = "text-align:right;padding-right:.1rem;";
+      sb.appendChild(n);
+    }
+
+    var toDelete = document.getElementsByClassName("LN_sb")[0];
+    if (toDelete)
+      p.removeChild(toDelete);
+
+    var sidebar = document.createElement("div");
+    sidebar.classList.add("LN_sb");
+    sidebar.style.cssText = "display:inline-block;float:left;width:auto;";
+    p.insertBefore(sidebar, ta);
+
+    for (var l = 0; l < lineCount; l++)
+      appendLineNum(document.getElementsByClassName("LN_sb")[0], l + 1);
+
+    input.addEventListener("scroll", function (e) {
+      var style = this.parentElement.children[0].style,
+        o = style.margin - this.scrollBottom;
+      style.marginTop = String(o) + "px";
+      this.parentElement.style.overflow = "hidden";
+    });
+  }
+
 }
