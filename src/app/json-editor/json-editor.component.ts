@@ -10,22 +10,25 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 export class JsonEditorComponent implements OnInit {
   jsonSource = '';
   jsonTarget = '';
-  body: any;
-  message: any;
   jsonURL: any;
-  @ViewChild('errormessage') errormessage: ElementRef;
-  content: string;
-  title: string;
-  errorcontent: string;
+  @ViewChild('modalRef') modalRef: ElementRef;
+  modalContent: string;
+  modalTitle: string;
+
+  alertTitle = {
+    alert: 'Alert',
+    success: 'Success',
+    error: 'Error',
+  }
 
   alertMessages = {
     errorcontent: 'JSON object not found in left editor.',
     fileLoadError: 'Exception when trying to parse json',
     downloadError: "This field can't be left empty.",
-    loadJsonError: "Please Enter URL.",
+    loadJsonError: "Please enter URL.",
     validJson: "Valid JSON data.",
     invalidJson: "Invalid JSON data.",
-    emptyData: "Json Editor is Empty!."
+    emptyData: "JSON editor is empty!."
   }
 
 
@@ -36,14 +39,14 @@ export class JsonEditorComponent implements OnInit {
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
-    this.title = 'Error';
   }
 
   ngOnInit(): void { }
 
-  handleError(message) {
-    this.errorcontent = message;
-    this.modalService.open(this.errormessage, { centered: true });
+  handleError(title, message) {
+    this.modalTitle = title;
+    this.modalContent = message;
+    this.modalService.open(this.modalRef, { centered: true });
   }
 
   open(content) {
@@ -63,10 +66,10 @@ export class JsonEditorComponent implements OnInit {
         this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource));
       }
       else {
-        this.handleError(this.alertMessages.errorcontent);
+        this.handleError(this.alertTitle.error, this.alertMessages.errorcontent);
       }
     } catch (e) {
-      this.handleError(this.alertMessages.errorcontent);
+      this.handleError(this.alertTitle.error, this.alertMessages.errorcontent);
     }
   }
 
@@ -74,12 +77,8 @@ export class JsonEditorComponent implements OnInit {
     try {
       this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource), null, '    ');
     } catch (e) {
-      this.handleError(this.alertMessages.errorcontent);
+      this.handleError(this.alertTitle.error, this.alertMessages.errorcontent);
     }
-  }
-
-  loadData() {
-    this.body.appendChild(document.createTextNode(JSON.stringify(this.jsonSource, null, 4)));
   }
 
   loadJSON() {
@@ -89,7 +88,7 @@ export class JsonEditorComponent implements OnInit {
           this.jsonSource = JSON.stringify(data);
         });
     } catch (e) {
-      this.handleError(this.alertMessages.loadJsonError);
+      this.handleError(this.alertTitle.error, this.alertMessages.loadJsonError);
     }
   }
 
@@ -105,7 +104,7 @@ export class JsonEditorComponent implements OnInit {
           this.jsonSource = JSON.parse(resSTR);
           this.jsonSource = JSON.stringify(JSON.parse(resSTR), null, '    ');
         } catch (e) {
-          this.handleError(this.alertMessages.fileLoadError);
+          this.handleError(this.alertTitle.error, this.alertMessages.fileLoadError);
         }
       };
     })(f);
@@ -114,17 +113,15 @@ export class JsonEditorComponent implements OnInit {
 
   validate() {
     try {
-      if (this.jsonSource.length < 1) {
-        this.handleError(this.alertMessages.emptyData);
-        return true;
+      if (this.jsonSource.length > 0) {
+        JSON.parse(this.jsonSource);
+        this.handleError(this.alertTitle.success, this.alertMessages.validJson);
       }
-      else{
-        this.message = this.jsonSource;
-        this.message = JSON.parse(this.jsonSource);
-        this.handleError(this.alertMessages.validJson);
+      else {
+        this.handleError(this.alertTitle.error, this.alertMessages.emptyData);
       }
     } catch (e) {
-      this.handleError(this.alertMessages.invalidJson);
+      this.handleError(this.alertTitle.error, this.alertMessages.invalidJson);
     }
   }
 
@@ -140,7 +137,7 @@ export class JsonEditorComponent implements OnInit {
 
   downloadFile() {
     if (this.jsonTarget.length < 1) {
-      this.handleError(this.alertMessages.downloadError);
+      this.handleError(this.alertTitle.error, this.alertMessages.downloadError);
       return true;
     }
     else {
