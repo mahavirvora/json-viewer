@@ -1,6 +1,8 @@
 <div class="row no-gutters border">
     <div class="col-5 border">
-        <textarea class="lined h-100 w-100" [(ngModel)]="jsonSource"></textarea>
+        <div id="load_json_form" class="form" data-header="Load json">
+            <textarea class="lined h-100 w-100" [(ngModel)]="jsonSource"></textarea>
+        </div>
     </div>
     <div class="col-2 border p-3">
         <div id="buttonDiv" class="buttonSection">
@@ -12,7 +14,7 @@
             <input type="button" title="Minify" value="Minify" class="btn btn-primary btn-block" (click)="minifyJSON()">
 
             <input type="button" title="JSON Viewer" value="JSON Viewer" class="btn btn-primary btn-block"
-                (click)="jsonViewer()" disabled>
+                (click)="jsonViewer()">
 
             <input type="button" title="Validate Json" value="Validate " class="btn btn-primary btn-block"
                 (click)="validate()" disabled>
@@ -39,7 +41,17 @@
         </div>
     </div>
     <div class="col-5 border">
-        <textarea class="lined h-100 w-100" [(ngModel)]="jsonTarget"></textarea>
+        <ul class="menu">
+            <li data-action="expand">
+                <a href="javascript:void(0)" (click)="expand()">Expand All</a>
+            </li>
+            <li data-action="collapse">
+                <a href="javascript:void(0)" (click)="collapse()">Collapse All</a>
+            </li>
+        </ul>
+        <div id="wrapper">
+            <textarea class="lined h-100 w-100" [(ngModel)]="jsonTarget" id="tree"></textarea>
+        </div>
     </div>
 </div>
 

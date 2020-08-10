@@ -19,14 +19,16 @@ export class JsonEditorComponent implements OnInit {
   content: string;
   title: string;
   errorcontent: string;
+  tree: any;
 
   alertMessages = {
-    errorcontent: 'JSON object not found in left editor.',
+    errorcontent: 'JSON object not found or well formated in left editor.',
     fileLoadError: 'Exception when trying to parse json',
     downloadError: "This field can't be left empty.",
     loadJsonError: "Please Enter URL.",
   }
-
+  rootNode: any;
+  sourceJSONObj: any;
 
   constructor(
     public config: NgbModalConfig,
@@ -126,10 +128,6 @@ export class JsonEditorComponent implements OnInit {
     this.formatting = { color: 'green', 'background-color': '#d0e9c6' };
   }
 
-  jsonViewer() {
-    this.jsonTarget = this.jsonSource;
-  }
-
   clear() {
     this.jsonSource = '';
     this.jsonTarget = '';
@@ -147,4 +145,74 @@ export class JsonEditorComponent implements OnInit {
       json.click();
     }
   }
+
+  jsonViewer() {
+    this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource), null, '    ');
+
+    return {
+      parse: function (json_str) {
+        var temp;
+
+        try {
+          temp = JSON.parse(json_str);
+        } catch (e) {
+          alert(e);
+        }
+
+        this.tree.loadData(temp);
+      }
+    };
+  }
+  expand() {
+    this.tree.expand();
+  }
+  collapse() {
+    this.tree.collapse();
+  }
+
+  Tree(jsonObj) {
+    this.rootNode = null;
+    this.sourceJSONObj = jsonObj;
+    this.loadData(jsonObj);
+
+
+    Tree(jsonObj); prototype = {
+
+      constructor: this.Tree,
+
+      loadData(jsonObj: any) {
+        this.sourceJSONObj = jsonObj;
+
+        this.rootNode = new Node(null, jsonObj, 'last');
+        this.wrapper.innerHTML = '';
+        this.wrapper.appendChild(this.rootNode.el);
+      },
+
+      expand(filterFunc: any): void {
+        if (this.rootNode.isComplex) {
+          if (typeof filterFunc == 'function') {
+            this.rootNode.childNodes.forEach(function (item, i) {
+              if (item.isComplex && filterFunc(item)) {
+                item.expand();
+              }
+            });
+          } else {
+            this.rootNode.expand('recursive');
+          }
+        }
+      },
+
+      collapse(): void {
+        if (typeof this.rootNode.collapse === 'function') {
+          this.rootNode.collapse('recursive');
+        }
+      }
+    }
+    return() => {
+      (jsonObj) => {
+        return new this.Tree(jsonObj);
+      }
+    }
+  }
+
 }
