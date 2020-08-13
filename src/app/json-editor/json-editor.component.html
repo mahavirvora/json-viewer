@@ -1,6 +1,8 @@
 <div class="row no-gutters border">
     <div class="col-5 border">
-        <textarea class="lined h-100 w-100" [(ngModel)]="jsonSource"></textarea>
+        <textarea class="rownr h-100" rows="20" cols="3" value="1" readonly></textarea>
+        <textarea class="lined h-100" [(ngModel)]="jsonSource" onclick="selectionchanged(this)" onkeyup="keyup(this,event)"
+        oninput="input_changed(this)" onscroll="scroll_changed(this)"></textarea>
     </div>
     <div class="col-2 border p-3">
         <div id="buttonDiv" class="buttonSection">
@@ -39,7 +41,9 @@
         </div>
     </div>
     <div class="col-5 border">
-        <textarea class="lined h-100 w-100" [(ngModel)]="jsonTarget"></textarea>
+        <textarea class="rownr h-100" rows="20" cols="3" value="1" readonly></textarea>
+        <textarea class="lined h-100" [(ngModel)]="jsonTarget" onclick="selectionchanged(this)" onkeyup="keyup(this,event)"
+        oninput="input_changed(this)" onscroll="scroll_changed(this)"></textarea>
     </div>
 </div>
 

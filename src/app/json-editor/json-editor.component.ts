@@ -30,6 +30,14 @@ export class JsonEditorComponent implements OnInit {
     invalidJson: "Invalid JSON data.",
     emptyData: "JSON editor is empty!."
   }
+  cntline: any;
+  lineCount: number;
+  obj_rownr: any;
+  tmp_arr: any;
+  cntline_old: number;
+  tmpstr: string;
+  obj: any;
+  i: number;
 
 
   constructor(
@@ -147,4 +155,67 @@ export class JsonEditorComponent implements OnInit {
       json.click();
     }
   }
+
+  // Show line numbers in textarea ///////////
+
+  keyup(obj, e) {
+		if (e.keyCode >= 33 && e.keyCode <= 40) 
+			this.selectionchanged(obj);
+	}
+
+	selectionchanged(obj) {
+		var substr = obj.value.substring(0, obj.selectionStart).split('\n');
+		var row = substr.length;
+		var col = substr[substr.length - 1].length;
+		var tmpstr = '(' + row.toString() + ',' + col.toString() + ')';
+		
+		if (obj.selectionStart != obj.selectionEnd) {
+			substr = obj.value.substring(obj.selectionStart, obj.selectionEnd).split('\n');
+			row += substr.length - 1;
+			col = substr[substr.length - 1].length;
+			tmpstr += ' - (' + row.toString() + ',' + col.toString() + ')';
+		}
+		obj.parentElement.getElementsByTagName('input')[0].value = tmpstr;
+	}
+
+	input_changed(obj_txt) {
+		this.obj_rownr = obj_txt.parentElement.parentElement.getElementsByTagName('textarea')[0];
+		this.cntline = this.count_lines(obj_txt.value);
+		if (this.cntline == 0) this.cntline = 1;
+		this.tmp_arr = this.obj_rownr.value.split('\n');
+		this.cntline_old = parseInt(this.tmp_arr[this.tmp_arr.length - 1], 10);
+		
+		if (this.cntline != this.cntline_old) {
+			this.obj_rownr.cols = this.cntline.toString().length; 
+			this.populate_rownr(this.obj_rownr, this.cntline);
+			this.scroll_changed(obj_txt);
+		}
+		this.selectionchanged(obj_txt);
+	}
+
+	scroll_changed(obj_txt) {
+		this.obj_rownr = obj_txt.parentElement.parentElement.getElementsByTagName('textarea')[0];
+		this.scrollsync(obj_txt, this.obj_rownr);
+	}
+
+	scrollsync(obj1, obj2) {
+		
+		obj2.scrollTop = obj1.scrollTop;
+	}
+
+	populate_rownr(obj, cntline) {
+		this.tmpstr = '';
+		for (this.i = 1; this.i <= cntline; this.i++) {
+			this.tmpstr = this.tmpstr + this.i.toString() + '\n';
+		}
+		obj.value = this.tmpstr;
+	}
+
+	count_lines(lined) {
+		if (lined == '') {
+			return 0;
+		}
+		return lined.split('\n').length + 0;
+	}
+
 }

@@ -1,8 +1,7 @@
 .lined {
-  background: url("src/assets/img/line-numbers.png") no-repeat 0px -8px / 33.3px local;
-  padding-left: 50px;
+  padding-left: 10px;
   padding-top: 8px;
-  width: 100%;
+  width: calc(100% - 50px);
   height: 100%;
   min-height: 70vh;
   border: none;
@@ -12,6 +11,22 @@
   font-size: 13px;
   line-height: 21px;
   min-height: 77vh;
+}
+.rownr {
+  overflow-y: hidden;
+  background-color: rgb(220, 220, 220);
+  border: none;
+  outline: none;
+  pointer-events: none;
+  color: #333333;
+  text-align: right;
+  vertical-align: top;
+  z-index: 0;
+  resize: none;
+  width: 50px;
+  line-height: 21px;
+  min-height: 77vh;
+  float: left;
 }
 .selectbox {
   min-height: 35px;
