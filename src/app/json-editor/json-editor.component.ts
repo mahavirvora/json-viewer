@@ -628,7 +628,4 @@ export class JsonEditorComponent implements OnInit {
     };
   }
 
-
-
-
 }
