@@ -8,29 +8,27 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class JsonEditorComponent implements OnInit {
+  @ViewChild('modalRef') modalRef: ElementRef;
   jsonSource = '';
   jsonTarget = '';
   jsonURL: any;
-  @ViewChild('modalRef') modalRef: ElementRef;
+  tabSpace = 4;
   modalContent: string;
   modalTitle: string;
-
   alertTitle = {
     alert: 'Alert',
     success: 'Success',
     error: 'Error',
-  }
-
+  };
   alertMessages = {
     errorcontent: 'JSON object not found in left editor.',
     fileLoadError: 'Exception when trying to parse json',
-    downloadError: "This field can't be left empty.",
-    loadJsonError: "Please enter URL.",
-    validJson: "Valid JSON data.",
-    invalidJson: "Invalid JSON data.",
-    emptyData: "JSON editor is empty!."
-  }
-
+    downloadError: 'This field can\'t be left empty.',
+    loadJsonError: 'Please enter URL.',
+    validJson: 'Valid JSON data.',
+    invalidJson: 'Invalid JSON data.',
+    emptyData: 'JSON editor is empty!.'
+  };
 
   constructor(
     public config: NgbModalConfig,
@@ -43,10 +41,16 @@ export class JsonEditorComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  handleError(title, message) {
+  handleError(title: string, message: string) {
     this.modalTitle = title;
     this.modalContent = message;
     this.modalService.open(this.modalRef, { centered: true });
+  }
+
+  setJsonTarget() {
+    if (this.jsonSource) {
+      this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource), null, this.tabSpace);
+    }
   }
 
   open(content) {
@@ -54,10 +58,8 @@ export class JsonEditorComponent implements OnInit {
   }
 
   selectedSpace(event: any) {
-    if (this.jsonSource) {
-      const tabSpace = Number(event.target.value) || 4;
-      this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource), null, tabSpace);
-    }
+    this.tabSpace = Number(event.target.value) || 4;
+    this.setJsonTarget();
   }
 
   minifyJSON() {
@@ -65,19 +67,18 @@ export class JsonEditorComponent implements OnInit {
       if (this.jsonSource) {
         this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource));
       }
-      else {
-        this.handleError(this.alertTitle.error, this.alertMessages.errorcontent);
-      }
     } catch (e) {
-      this.handleError(this.alertTitle.error, this.alertMessages.errorcontent);
+      const message = e.message || this.alertMessages.errorcontent;
+      this.handleError(this.alertTitle.error, message);
     }
   }
 
   beautifyJSON() {
     try {
-      this.jsonTarget = JSON.stringify(JSON.parse(this.jsonSource), null, '    ');
+      this.setJsonTarget();
     } catch (e) {
-      this.handleError(this.alertTitle.error, this.alertMessages.errorcontent);
+      const message = e.message || this.alertMessages.errorcontent;
+      this.handleError(this.alertTitle.error, message);
     }
   }
 
@@ -88,27 +89,25 @@ export class JsonEditorComponent implements OnInit {
           this.jsonSource = JSON.stringify(data);
         });
     } catch (e) {
-      this.handleError(this.alertTitle.error, this.alertMessages.loadJsonError);
+      const message = e.message || this.alertMessages.loadJsonError;
+      this.handleError(this.alertTitle.error, message);
     }
   }
 
   onFileLoad(event) {
-    const f = event.target.files[0];
+    const file = event.target.files[0];
     const reader = new FileReader();
-
     reader.onload = ((theFile) => {
-      return (e) => {
+      return (data: any) => {
         try {
-          const json = JSON.parse(e.target.result);
-          const resSTR = JSON.stringify(json);
-          this.jsonSource = JSON.parse(resSTR);
-          this.jsonSource = JSON.stringify(JSON.parse(resSTR), null, '    ');
+          this.jsonSource = JSON.stringify(JSON.parse(data.target.result), null, this.tabSpace);
         } catch (e) {
-          this.handleError(this.alertTitle.error, this.alertMessages.fileLoadError);
+          const message = e.message || this.alertMessages.fileLoadError;
+          this.handleError(this.alertTitle.error, message);
         }
       };
-    })(f);
-    reader.readAsText(f);
+    })(file);
+    reader.readAsText(file);
   }
 
   validate() {
@@ -116,15 +115,14 @@ export class JsonEditorComponent implements OnInit {
       if (this.jsonSource.length > 0) {
         JSON.parse(this.jsonSource);
         this.handleError(this.alertTitle.success, this.alertMessages.validJson);
-      }
-      else {
+      } else {
         this.handleError(this.alertTitle.error, this.alertMessages.emptyData);
       }
     } catch (e) {
-      this.handleError(this.alertTitle.error, this.alertMessages.invalidJson);
+      const message = e.message || this.alertMessages.invalidJson;
+      this.handleError(this.alertTitle.error, message);
     }
   }
-
 
   jsonViewer() {
     this.jsonTarget = this.jsonSource;
@@ -136,15 +134,14 @@ export class JsonEditorComponent implements OnInit {
   }
 
   downloadFile() {
-    if (this.jsonTarget.length < 1) {
-      this.handleError(this.alertTitle.error, this.alertMessages.downloadError);
-      return true;
-    }
-    else {
-      var json = document.createElement('a');
+    if (this.jsonTarget.length > 0) {
+      const json = document.createElement('a');
       json.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(this.jsonTarget));
       json.setAttribute('download', 'download.json');
       json.click();
+    } else {
+      this.handleError(this.alertTitle.error, this.alertMessages.downloadError);
+      return true;
     }
   }
 }

@@ -8,43 +8,52 @@
   resize: none;
   display: flex;
   outline: none;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 21px;
   min-height: 77vh;
 }
+
 .selectbox {
   min-height: 35px;
   line-height: 35px;
   border-radius: 3px;
   padding: 5px;
 }
+
 .btn-primary {
   background-color: #fb5045;
   border-color: #fb5045;
 }
+
 .btn-primary:hover,
 .btn-primary:active {
   background-color: #ed4338 !important;
   border-color: #ed4338 !important;
 }
+
 .btn-primary:focus,
 .btn-primary.focus {
   box-shadow: none !important;
 }
+
 .modal-header {
   padding: 0.5rem 1rem;
   outline: none;
 }
+
 .modal-title {
   color: #ed4338;
 }
+
 button:focus {
   outline: none;
 }
-.buttonSection{
+
+.buttonSection {
   text-align: center;
 }
-.alert-position{
+
+.alert-position {
   position: absolute;
   top: 0;
   right: 0;
