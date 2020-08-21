@@ -61,3 +61,7 @@ button:focus {
   padding: 5px 7px;
   font-size: 11px;
 }
+
+.modal-message {
+  margin: 1rem;
+}
