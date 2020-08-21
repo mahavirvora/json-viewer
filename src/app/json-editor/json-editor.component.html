@@ -25,8 +25,8 @@
 
       <br> <label for="mode"><b>Input Mode</b></label> <br>
 
-      <input class="d-none" type="file" (change)="onFileLoad($event)" #fileinput />
-      <button class="btn btn-primary btn-block mt-2" type="button" (click)="fileinput.click()">Browse</button>
+      <input class="d-none" type="file" (change)="onFileLoad($event)" #fileInput />
+      <button class="btn btn-primary btn-block mt-2" type="button" (click)="fileInput.click()">Browse</button>
 
       <input title="Load From Url" type="button" value="Load Url" class="btn btn-primary btn-block"
         (click)="open(content)">

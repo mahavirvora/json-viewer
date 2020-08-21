@@ -8,7 +8,6 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class JsonEditorComponent implements OnInit {
-  @ViewChild('modalRef') modalRef: ElementRef;
   jsonSource = '';
   jsonTarget = '';
   jsonURL: any;
@@ -29,6 +28,8 @@ export class JsonEditorComponent implements OnInit {
     invalidJson: 'Invalid JSON data.',
     emptyData: 'JSON editor is empty!.'
   };
+  @ViewChild('modalRef') modalRef: ElementRef;
+  @ViewChild('fileInput') fileInput: ElementRef;
 
   constructor(
     public config: NgbModalConfig,
@@ -83,31 +84,36 @@ export class JsonEditorComponent implements OnInit {
   }
 
   loadJSON() {
-    try {
-      return this.http.get(this.jsonURL)
-        .subscribe((data: any) => {
-          this.jsonSource = JSON.stringify(data);
-        });
-    } catch (e) {
-      const message = e.message || this.alertMessages.loadJsonError;
-      this.handleError(this.alertTitle.error, message);
-    }
+    this.http.get(this.jsonURL)
+      .subscribe((data: any) => {
+        this.jsonSource = JSON.stringify(data);
+        this.modalService.dismissAll();
+      }, (e) => {
+        this.modalService.dismissAll();
+        const message = e.message || this.alertMessages.loadJsonError;
+        this.handleError(this.alertTitle.error, message);
+      });
   }
 
   onFileLoad(event) {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = ((theFile) => {
-      return (data: any) => {
-        try {
-          this.jsonSource = JSON.stringify(JSON.parse(data.target.result), null, this.tabSpace);
-        } catch (e) {
-          const message = e.message || this.alertMessages.fileLoadError;
-          this.handleError(this.alertTitle.error, message);
-        }
-      };
-    })(file);
-    reader.readAsText(file);
+    console.log('load');
+    if (file) {
+      console.log('call');
+      const reader = new FileReader();
+      reader.onload = ((theFile) => {
+        this.fileInput.nativeElement.value = '';
+        return (data: any) => {
+          try {
+            this.jsonSource = data.target.result;
+          } catch (e) {
+            const message = e.message || this.alertMessages.fileLoadError;
+            this.handleError(this.alertTitle.error, message);
+          }
+        };
+      })(file);
+      reader.readAsText(file);
+    }
   }
 
   validate() {
@@ -124,13 +130,10 @@ export class JsonEditorComponent implements OnInit {
     }
   }
 
-  jsonViewer() {
-    this.jsonTarget = this.jsonSource;
-  }
-
   clear() {
     this.jsonSource = '';
     this.jsonTarget = '';
+    this.fileInput.nativeElement.value = '';
   }
 
   downloadFile() {
@@ -141,7 +144,6 @@ export class JsonEditorComponent implements OnInit {
       json.click();
     } else {
       this.handleError(this.alertTitle.error, this.alertMessages.downloadError);
-      return true;
     }
   }
 }
